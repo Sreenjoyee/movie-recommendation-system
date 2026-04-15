@@ -66,6 +66,13 @@ pip install -r requirements.txt
 ```
 
 ---
+## 📂 Dataset
+
+This project does not include the dataset due to size limitations.
+
+You can download the dataset from Kaggle:
+
+👉 https://www.kaggle.com/tmdb/tmdb-movie-metadata
 
 ## ▶️ Run the App
 
