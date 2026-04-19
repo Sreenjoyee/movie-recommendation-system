@@ -4,3 +4,4 @@ tmdb_5000_credits.csv
 similarity.pkl
 movie_list.pkl
 __pycache__/
+.env
