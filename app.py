@@ -28,20 +28,44 @@ def fetch_poster(movie_id):
 
 def recommend(movie):
     index = movies[movies['title'] == movie].index[0]
-    distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
+    distances = sorted(
+        list(enumerate(similarity[index])),
+        reverse=True,
+        key=lambda x: x[1]
+    )
+
+    top_20 = distances[1:21]
+
+    candidates = []
+    for i, score in top_20:
+        movie_id = movies.iloc[i]['movie_id']
+        dt_row = dt_features[dt_features['movie_id'] == movie_id]
+
+        if not dt_row.empty:
+            features = dt_row[['popularity', 'runtime', 'vote_count']].values
+            quality = dt.predict(features)[0]
+        else:
+            quality = 0
+
+        candidates.append((i, score, quality))
+
+    candidates.sort(key=lambda x: (-x[2], -x[1]))
+
     recommended_movie_names = []
     recommended_movie_posters = []
-    for i in distances[1:6]:
-        movie_id = movies.iloc[i[0]].movie_id
+    for idx, _, _ in candidates[:5]:
+        movie_id = movies.iloc[idx].movie_id
         recommended_movie_posters.append(fetch_poster(movie_id))
-        recommended_movie_names.append(movies.iloc[i[0]].title)
+        recommended_movie_names.append(movies.iloc[idx].title)
 
-    return recommended_movie_names,recommended_movie_posters
+    return recommended_movie_names, recommended_movie_posters
 
 
 st.header('Movie Recommender System')
 movies = pickle.load(open('movie_list.pkl','rb'))
 similarity = pickle.load(open('similarity.pkl','rb'))
+dt = pickle.load(open('dt_model.pkl', 'rb'))
+dt_features = pickle.load(open('dt_features.pkl', 'rb'))
 
 movie_list = movies['title'].values
 selected_movie = st.selectbox(

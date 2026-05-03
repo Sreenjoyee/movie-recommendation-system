@@ -44,7 +44,12 @@ A content-based movie recommendation system built using machine learning techniq
 
    * Computes cosine similarity between movies
 
-5. **Recommendation**
+5. **Quality Ranking**
+   * Uses a Decision Tree model trained on `popularity`, `runtime`, and `vote_count`
+   * Ranks top similar movies by predicted quality (vote_average ≥ 7.0)
+   * Returns top 5 highest-quality recommendations
+
+6. **Recommendation**
 
    * Returns top 5 similar movies based on selected input
 
@@ -73,6 +78,14 @@ This project does not include the dataset due to size limitations.
 You can download the dataset from Kaggle:
 
 👉 https://www.kaggle.com/tmdb/tmdb-movie-metadata
+
+## 📦 Required Model Files
+
+After running the notebook, ensure these pickle files exist:
+* `movie_list.pkl` - Movie data
+* `similarity.pkl` - Cosine similarity matrix
+* `dt_model.pkl` - Trained Decision Tree model
+* `dt_features.pkl` - Movie feature data for the Decision Tree
 
 ## ▶️ Run the App
 
